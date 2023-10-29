@@ -9,16 +9,14 @@
  */
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Starter Blog`,
+    title: `戴凯文的小窝`,
     author: {
-      name: `Kyle Mathews`,
-      summary: `who lives and works in San Francisco building useful things.`,
+      name: `戴凯文`,
+      summary: `戴凯文的技术生活博客`,
     },
-    description: `A starter blog demonstrating what Gatsby can do.`,
-    siteUrl: `https://gatsbystarterblogsource.gatsbyjs.io/`,
-    social: {
-      twitter: `kylemathews`,
-    },
+    description: `记录一些成长和生活。`,
+    siteUrl: `https://daikaiwen.netlify.app/`,
+    social: {},
   },
   plugins: [
     `gatsby-plugin-image`,
@@ -102,7 +100,7 @@ module.exports = {
               }
             }`,
             output: "/rss.xml",
-            title: "Gatsby Starter Blog RSS Feed",
+            title: "戴凯文的小窝 RSS Feed",
           },
         ],
       },
