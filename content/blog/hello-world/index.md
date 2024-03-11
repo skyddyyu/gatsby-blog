@@ -17,6 +17,7 @@ console.log("hello JavaScript.")
 | 序号 | 内容         |
 |:---|:-----------|
 | 1  | JavaScript |
+| 1  | React      |
 | 2  | CSS        |
 | 3  | HTML       |
 
