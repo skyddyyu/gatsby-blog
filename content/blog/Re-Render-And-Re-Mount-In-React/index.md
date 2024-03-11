@@ -265,7 +265,7 @@ const Parent = () => {
 
 如上代码中，list的值是固定的，那么每次map的时候<Child/>的key值都都不会发生改变。但是当我们点击button触发Parent状态更新的时候Child却打印了5次“Child render”。那么key的作用到底是什么呢？
 
-**Key是用来优化DOM的，而不是用来优化re-render,如果key不变，组件的type也不变，那么React会复用DOM节点，提高性能。**因此上面例子中没有打印“Child mount”二十打印了5次“Child render”。
+**Key是用来优化DOM的，而不是用来优化re-render,如果key不变，组件的type也不变，那么React会复用DOM节点，提高性能**因此上面例子中没有打印“Child mount”二十打印了5次“Child render”。
 
 > 在React中的源码中的reconcile 阶段，React会根据key和type的值来直接复用Fiber Node,Fiber Node中的stateNode就是DOM节点。所以key的作用是优化DOM节点的复用，与re-render无关。如果我们要优化re-render我们应该使用React.memo来包裹Child组件。
 
