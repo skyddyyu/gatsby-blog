@@ -1,7 +1,7 @@
 ---
 title: React中重新渲染和重新挂载
-date: "2023-10-29"
-description: "Hello World"
+date: "2024-03-12"
+description: "React‘s Re-Render And Re-Mount"
 ---
 
 1.状态下放
