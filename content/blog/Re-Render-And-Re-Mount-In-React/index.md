@@ -6,7 +6,7 @@ description: "React‘s Re-Render And Re-Mount"
 
 1.状态下放
 
-```react
+```tsx
 const Child = () => {
   console.log("Child render");
   return (
@@ -35,7 +35,7 @@ const Parent = () => {
 
 下放之后的效果如下：
 
-```React
+```tsx
 const Child = () => {
   console.log("Child render");
   return (
@@ -72,7 +72,7 @@ const Parent = () => {
 
 当未使用组合时，下面代码中的Child组件会随着Parent组件状态的改变而re-render
 
-```react
+```tsx
 // 未使用组合时
 const Child = () => {
     console.log("Child Render");
@@ -109,7 +109,7 @@ const App = () => {
 
 > 而当我们使用组合时，**将Child组件以Props的children形式进行传递给Parent，此时Child组件相当于提了一个层级**，也就是在App组件中。此时Parent组件状态发生改变，Child组件不会发生re-render。
 
-```react
+```tsx
 // 使用组合之后的代码如下
 const Child = () => {
     console.log("Child Render");
@@ -148,7 +148,7 @@ const App = () => {
 
 ②使用memo
 
-```react
+```tsx
 // 使用memo的代码如下
 const Child = React.memo(() => {
     console.log("Child Render");
@@ -176,7 +176,7 @@ const Parent = () => {
 
 *什么时候使用组合，什么时候使用memo*
 
-```react
+```tsx
 const Child = React.memo(({style, count, onSuccess}) => {
 
     console.log("Child Render")
@@ -231,7 +231,7 @@ const Parent = () => {
 
 3.列表渲染优化
 
-```react
+```tsx
 const Child = () => {
     console.log("Child render");
 
@@ -271,7 +271,7 @@ const Parent = () => {
 
 假如是 React 新手，可能会写出这样的代码：
 
-```react
+```tsx
 const Parent = () => {
   const [count, setCount] = useState(0);
 
@@ -309,7 +309,7 @@ const Parent = () => {
 
 4.Context优化相关
 
-```react
+```tsx
 const ThemeContext = React.createContext({
   theme: "light",
   setTheme: () => {},
@@ -349,7 +349,7 @@ const App = () => {
 
 下面使用**组合**和**useMemo**来解决该问题，代码如下：
 
-```react
+```tsx
 const ThemeContext = React.createContext({
     theme: "light",
     setTheme: () => {
