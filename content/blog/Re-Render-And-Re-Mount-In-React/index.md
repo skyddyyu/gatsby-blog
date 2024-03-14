@@ -37,31 +37,34 @@ const Parent = () => {
 
 ```tsx
 const Child = () => {
-  console.log("Child render");
+  console.log("Child render")
   return (
     <div>
       <span>Child</span>
     </div>
-  );
-};
+  )
+}
 
 const Couter = () => {
-  console.log("Counter render");
+  const [count, setCount] = useState(0)
+  console.log("Counter render")
   return (
-    <span>count: {count}</span>
-    <button onClick={() => setCount(count + 1)}>+</button>
-  );
-};
+    <>
+      <span>count: {count}</span>
+      <button onClick={() => setCount(count + 1)}>+</button>
+    </>
+  )
+}
 
 const Parent = () => {
-  console.log("Parent render");
+  console.log("Parent render")
   return (
     <div>
-      <Counter/>
+      <Counter />
       <Child />
     </div>
-  );
-};
+  )
+}
 ```
 
 此时当Counter组件的状态发生变化的时候，原有的Child组件并不会发生重新渲染。
@@ -265,7 +268,7 @@ const Parent = () => {
 
 如上代码中，list的值是固定的，那么每次map的时候<Child/>的key值都都不会发生改变。但是当我们点击button触发Parent状态更新的时候Child却打印了5次“Child render”。那么key的作用到底是什么呢？
 
-**Key是用来优化DOM的，而不是用来优化re-render,如果key不变，组件的type也不变，那么React会复用DOM节点，提高性能**因此上面例子中没有打印“Child mount”二十打印了5次“Child render”。
+**Key是用来优化DOM的，而不是用来优化re-render,如果key不变，组件的type也不变，那么React会复用DOM节点，提高性能**因此上面例子中没有打印“Child mount”而是打印了5次“Child render”。
 
 > 在React中的源码中的reconcile 阶段，React会根据key和type的值来直接复用Fiber Node,Fiber Node中的stateNode就是DOM节点。所以key的作用是优化DOM节点的复用，与re-render无关。如果我们要优化re-render我们应该使用React.memo来包裹Child组件。
 
@@ -304,7 +307,7 @@ const Parent = () => {
 
 这是因为，Child组件被定义在Parent里面；Parent状态发生改变，Parent重新执行每次都会重新创建Child函数，也就每次都会生成新的React Element创建新的Fiber Node。所以re-mount和re-render都会发生。
 
-*我们应该尽量避免组件re-render,组件re-render时内部的state状态会丢失。由于DOM节点的重新创建和插入，也会导致一些表单元素的光标丢失，页面闪烁，useEfeect重新执行等问题。*
+*我们应该尽量避免组件re-Mount,组件re-Mount时内部的state状态会丢失。由于DOM节点的重新创建和插入，也会导致一些表单元素的光标丢失，页面闪烁，useEfeect重新执行等问题。*
 总结：**type和key变化会触发re-mount，而props变化会触发re-render。**
 
 4.Context优化相关
