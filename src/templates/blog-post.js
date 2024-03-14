@@ -4,12 +4,33 @@ import { Link, graphql } from "gatsby"
 import Bio from "../components/bio"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
+import { useEffect } from "react"
 
 const BlogPostTemplate = ({
   data: { previous, next, site, markdownRemark: post },
   location,
 }) => {
   const siteTitle = site.siteMetadata?.title || `Title`
+
+  useEffect(() => {
+    const script = document.createElement("script")
+    script.src = "https://cdn.staticfile.org/twikoo/1.6.31/twikoo.all.min.js"
+    document.body.appendChild(script)
+
+    script.onload = () => {
+      window.twikoo.init({
+        envId: "https://twikoo-fun.netlify.app",
+        el: "#tcomment", // 容器元素
+        // region: 'ap-guangzhou', netlify 环境不填
+        // path: location.pathname, // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
+        lang: "zh-CN", // 用于手动设定评论区语言，支持的语言列表 https://github.com/twikoojs/twikoo/blob/main/src/client/utils/i18n/index.js
+      })
+    }
+
+    return () => {
+      document.body.removeChild(script)
+    }
+  }, [])
 
   return (
     <Layout location={location} title={siteTitle}>
@@ -29,6 +50,7 @@ const BlogPostTemplate = ({
         <hr />
         <footer>
           <Bio />
+          <div id="tcomment"></div>
         </footer>
       </article>
       <nav className="blog-post-nav">
