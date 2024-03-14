@@ -19,7 +19,7 @@ const BlogPostTemplate = ({
 
     script.onload = () => {
       window.twikoo.init({
-        envId: "https://twikoo-fun.netlify.app",
+        envId: "https://twikoo-fun.netlify.app/.netlify/functions/twikoo",
         el: "#tcomment", // 容器元素
         // region: 'ap-guangzhou', netlify 环境不填
         // path: location.pathname, // 用于区分不同文章的自定义 js 路径，如果您的文章路径不是 location.pathname，需传此参数
