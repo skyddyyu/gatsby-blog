@@ -29,11 +29,11 @@ const Parent = () => {
 };
 ```
 
-> 上面例子中，Parent组件的state发生变化后Child子组件也会跟着渲染，因为React的渲染机制，父组件re-render的时候，子组件未使用React.memo包裹的时候是一定会发生重新渲染的，该渲染是不必要的。
+> 上面例子中，Parent组件的state发生变化后Child子组件也会跟着渲染，因为React的渲染机制，父组件re-render的时候，子组件ReactElement的props是一个新对象，是一定会发生重新渲染的，该渲染是不必要的。可以使用React.memo进行浅比较props对象，防止多余re-render。
 
 由于count状态在Parent组件中只被span和button所引用，而Child组件未使用。因此可以将Parent中的count状态下放，并抽取一个新组件Counter。**组件的状态应该尽可能的少，尽可能的下放，这样可以避免不必要的重新渲染。**
 
-下放之后的效果如下：
+下放之后的代码如下：
 
 ```tsx
 const Child = () => {
@@ -66,8 +66,6 @@ const Parent = () => {
   )
 }
 ```
-
-此时当Counter组件的状态发生变化的时候，原有的Child组件并不会发生重新渲染。
 
 2.组合或memo
 
@@ -110,7 +108,7 @@ const App = () => {
 };
 ```
 
-> 而当我们使用组合时，**将Child组件以Props的children形式进行传递给Parent，此时Child组件相当于提了一个层级**，也就是在App组件中。此时Parent组件状态发生改变，Child组件不会发生re-render。
+> 而当我们使用组合时，**将Child组件以Props的children形式进行传递给Parent，此时Child组件相当于提了一个层级**，也就是在App组件中。此时Parent组件状态发生改变，Child组件不会发生re-render。因为Child组件在App组件中被渲染，Child组件的React Element对象的变化只在App组件中发生。如果App组件不re-render,传递给Parent的React Element的Props就不会发生改变、不会重新渲染。
 
 ```tsx
 // 使用组合之后的代码如下
@@ -268,7 +266,7 @@ const Parent = () => {
 
 如上代码中，list的值是固定的，那么每次map的时候<Child/>的key值都都不会发生改变。但是当我们点击button触发Parent状态更新的时候Child却打印了5次“Child render”。那么key的作用到底是什么呢？
 
-**Key是用来优化DOM的，而不是用来优化re-render,如果key不变，组件的type也不变，那么React会复用DOM节点，提高性能**因此上面例子中没有打印“Child mount”而是打印了5次“Child render”。
+**Key是用来决定是否re-Mount，而不是用来优化re-render,如果key不变，组件的type也不变，那么React会复用DOM节点，提高性能**。因此上面例子中没有打印“Child mount”而是打印了5次“Child render”。
 
 > 在React中的源码中的reconcile 阶段，React会根据key和type的值来直接复用Fiber Node,Fiber Node中的stateNode就是DOM节点。所以key的作用是优化DOM节点的复用，与re-render无关。如果我们要优化re-render我们应该使用React.memo来包裹Child组件。
 
@@ -349,6 +347,10 @@ const App = () => {
 ```
 
 当我们点击Btn的时候"Toolbar render"会打印，但是Toolbar并没有依赖count。且Toolbar也被memo优化了，还是re-render了。当我们切换Toolbar里面的theme的时候，发现"Btn render"也会被打印，但是btn并没有使用Context。
+> 原因如下：
+> 1.当点击Btn的时候，被memo的Toolbar仍然会渲染；是因为Toolbar里面用到了上下文，而Btn点击会触发App的re-render,App每次re-render重新执行的时候都会生成新的对象{ theme, setTheme }放入上下文中，此时上下文发生了改变。自然用到上下文的Toolbar会re-render。 2.当改变Toolbar里面的theme的时候，App组件会重新re-render,Btn组件在没有memo的情况下当然会re-render。
+
+**好的做法是：Context应该提供专门的Provider组件，并将相关状态封装在组件内部，且状态尽可能少、必要时拆分上下文；同时将上下文的子节点通过children传入**
 
 下面使用**组合**和**useMemo**来解决该问题，代码如下：
 
